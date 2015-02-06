@@ -28,7 +28,7 @@ class ParticleManager:
   def __init__(self,manager,xml):
     # Get the particle system path...
     self.basePath = manager.get('paths').getConfig().find('particles').get('path')
-    
+
     # Enable the particle system...
     base.enableParticles()
 
@@ -54,7 +54,7 @@ class ParticleManager:
     # Kill all running effects - as these are meant to be 'fire once' particle effects this makes sense...
     for key,pn in self.effects.iteritems():
       pn[0].cleanup()
-      pn[0].remove()
+      pn[0].remove_node()
       pn[1].removeNode()
 
 
@@ -68,7 +68,7 @@ class ParticleManager:
     else:
       n = render.attachNewNode('')
       self.prepNode(n)
-      
+
       n.setPos(render,source.getPos(render))
       n.setQuat(render,source.getQuat(render))
 
@@ -82,7 +82,7 @@ class ParticleManager:
     p = ParticleEffect()
     p.loadConfig(Filename(self.pdb[name]['file']))
     p.start(n)
-    
+
     # Store effect in the effect database...
     self.effects[id(p)] = (p,n)
 
@@ -92,7 +92,7 @@ class ParticleManager:
         if self.effects.has_key(id(p)):
           pn = self.effects[id(p)]
           pn[0].cleanup()
-          pn[0].remove()
+          pn[0].remove_node()
           pn[1].removeNode()
           del self.effects[id(p)]
       s = Sequence(Wait(float(self.pdb[name]['life'])),Func(kill,p))
@@ -105,4 +105,3 @@ class ParticleManager:
     node.setDepthWrite(False)
     node.setLightOff()
     node.setShaderOff()
-  

@@ -1,4 +1,4 @@
-Default Input
+=Default Input=
 ----
 
 Player Controls
@@ -14,11 +14,22 @@ Player Controls
 
 Other Controls
 
-  * f1 - toggle the in-game python console. Allows arbitrary python commands to be entered in real time. Has access to all plugins by name.
+  * f1 - toggle the in-game python console. 
+         Allows arbitrary python commands to be entered in real time. 
+         Has access to all plugins by name.
+         
   * f4 - toggle fullscreen.
+  
   * f7 - toggles wireframe rendering.
+  
   * f9 - resets the players position, for when you fall out of the level!
-  * f10 - starts the profiler, including running the profiler executable. Note that the program won't fully close until the profiler is fully closed.
+  
+  * f10 - starts the profiler, including running the profiler executable. 
+         Note that the program won't fully close until the profiler is fully closed.
+         
   * f11 - take a screenshot.
-  * shift-f11 - toggle taking a screenshot every single frame. Allows for primitive video recording.
+  
+  * shift-f11 - toggle taking a screenshot every single frame. 
+         Allows for primitive video recording.
+         
   * f12 - toggle the framerate being visible.

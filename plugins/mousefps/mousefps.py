@@ -26,7 +26,7 @@ class MouseFPS:
   def __init__(self,manager,xml):
     self.reset = False
     self.task = None
-    
+
     self.reload(manager,xml)
 
 
@@ -82,7 +82,9 @@ class MouseFPS:
 
 
   def mouseTask(self,task):
-    if self.reset: # It seems that reseting the mouse pointer sometimes take a frame, threfore after a reset ignore the mouse for the next frame. Bad, yes, but better than a flick.
+    if self.reset: # It seems that reseting the mouse pointer sometimes take a frame,
+                   # threfore after a reset ignore the mouse for the next frame.
+                   # Bad, yes, but better than a flick.
       self.reset = False
       return task.cont
 
@@ -93,14 +95,16 @@ class MouseFPS:
     self.originX = md.getX()
     self.originY = md.getY()
 
-    # The if statement is not necessary - it exists so if you start the program with the mouse cursor outside the window and then move it into the window the camera will not jerk. It of course could prevent really fast rotation in game.
+    # The if statement is not necessary - it exists so if you start the program
+    #with the mouse cursor outside the window and then move it into the window
+    # the camera will not jerk. It of course could prevent really fast rotation in game.
     if abs(ox)<base.win.getXSize()//3 and abs(oy)<base.win.getYSize()//3:
       if self.xNode: self.xNode.setH(self.xNode.getH() - ox*self.speed)
-      if self.yNode: self.yNode.setP(min(max(self.yNode.getP() - oy*self.speed,self.minY),self.maxY))
+      if self.yNode: self.yNode.setP(min(max(self.yNode.getP() - oy * self.speed,self.minY), self.maxY))
 
     xoob = self.originX<base.win.getXSize()//4 or self.originX>(base.win.getXSize()*3)//4
     yoob = self.originY<base.win.getYSize()//4 or self.originY>(base.win.getYSize()*3)//4
-    
+
     # OSX had relative mouse support all along, Windows never had, and 1.7.0 added it for Linux.
     if (xoob or yoob) and platform != "darwin" and (platform.startswith("win") or PandaSystem.getMinorVersion() < 7):
       cx = base.win.getXSize()//2

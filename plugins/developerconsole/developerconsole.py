@@ -13,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pandac.PandaModules import TextNode, TextProperties, TextPropertiesManager
+from pandac.PandaModules import TextNode
+from pandac.PandaModules import TextProperties
+from pandac.PandaModules import TextPropertiesManager
 from direct.showbase.DirectObject import DirectObject
-from direct.gui.DirectGui import DirectFrame, DirectEntry
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectGui import DirectEntry
 from direct.gui.OnscreenText import OnscreenText
+
 import sys, traceback
 import __main__
+
 from code import InteractiveInterpreter
 
 import panda3d
@@ -43,9 +48,35 @@ class DeveloperConsole(InteractiveInterpreter, DirectObject):
     TextPropertiesManager.getGlobalPtr().setProperties("err", tpErr)
     self.manager = manager
     font = loader.loadFont("cmss12")
-    self.frame = DirectFrame(parent = base.a2dTopCenter, text_align = TextNode.ALeft, text_pos = (-base.getAspectRatio() + TEXT_MARGIN[0], TEXT_MARGIN[1]), text_scale = 0.05, text_fg = (1, 1, 1, 1), frameSize = (-2.0, 2.0, -0.5, 0.0), frameColor = (0, 0, 0, 0.5), text = '', text_font = font)
-    self.entry = DirectEntry(parent = base.a2dTopLeft, command = self.command, scale = 0.05, width = 1000.0, pos = (-0.02, 0, -0.48), relief = None, text_pos = (1.5, 0, 0), text_fg = (1, 1, 0.5, 1), rolloverSound = None, clickSound = None, text_font = font)
-    self.otext = OnscreenText(parent = self.entry, scale = 1, align = TextNode.ALeft, pos = (1, 0, 0), fg = (1, 1, 0.5, 1), text = ':', font = font)
+    self.frame = DirectFrame(parent = base.a2dTopCenter,
+                            text_align = TextNode.ALeft,
+                            text_pos = (-base.getAspectRatio() + TEXT_MARGIN[0], TEXT_MARGIN[1]),
+                            text_scale = 0.05,
+                            text_fg = (1, 1, 1, 1),
+                            frameSize = (-2.0, 2.0, -0.5, 0.0),
+                            frameColor = (0, 0, 0, 0.5),
+                            text = '',
+                            text_font = font)
+
+    self.entry = DirectEntry(parent = base.a2dTopLeft,
+                            command = self.command,
+                            scale = 0.05,
+                            width = 1000.0,
+                            pos = (-0.02, 0, -0.48),
+                            relief = None,
+                            text_pos = (1.5, 0, 0),
+                            text_fg = (1, 1, 0.5, 1),
+                            rolloverSound = None,
+                            clickSound = None,
+                            text_font = font)
+
+    self.otext = OnscreenText(parent = self.entry,
+                              scale = 1,
+                              align = TextNode.ALeft,
+                              pos = (1, 0, 0),
+                              fg = (1, 1, 0.5, 1),
+                              text = ':',
+                              font = font)
     self.lines = [''] * 9
     self.commands = []  # All previously sent commands
     self.cscroll = None # Index of currently navigated command, None if current
@@ -53,7 +84,7 @@ class DeveloperConsole(InteractiveInterpreter, DirectObject):
     self.block = ''     # Temporarily stores a block of commands
     self.hide()
     self.initialized = False
-  
+
   def prevCommand(self):
     if self.hidden: return
     if len(self.commands) == 0: return
@@ -67,7 +98,7 @@ class DeveloperConsole(InteractiveInterpreter, DirectObject):
     self.cscroll -= 1
     self.entry.set(self.commands[self.cscroll])
     self.entry.setCursorPosition(len(self.commands[self.cscroll]))
-  
+
   def nextCommand(self):
     if self.hidden: return
     if len(self.commands) == 0: return
@@ -108,14 +139,14 @@ class DeveloperConsole(InteractiveInterpreter, DirectObject):
       self.writeOut(self.otext['text'] + ' ' + text + '\n', False)
       if text != '' and (len(self.commands) == 0 or self.commands[-1] != text):
         self.commands.append(text)
-      
+
       # Insert plugins into the local namespace
       locals = __main__.__dict__
       locals['manager'] = self.manager
       for plugin in self.manager.named.keys():
         locals[plugin] = self.manager.named[plugin]
       locals['panda3d'] = panda3d
-      
+
       # Run it and print the output.
       if not self.initialized:
         InteractiveInterpreter.__init__(self, locals = locals)
@@ -126,7 +157,7 @@ class DeveloperConsole(InteractiveInterpreter, DirectObject):
           self.block += '\n' + text
         else:
           self.otext['text'] = ':'
-          self.block = ''      
+          self.block = ''
       except Exception: # Not just "except", it will also catch SystemExit
         # Whoops! Print out a traceback.
         self.writeErr(traceback.format_exc())
@@ -163,4 +194,3 @@ class DeveloperConsole(InteractiveInterpreter, DirectObject):
     self.frame.destroy()
     self.entry.destroy()
     self.otext.destroy()
-

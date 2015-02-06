@@ -25,19 +25,20 @@ import direct.directbase.DirectStart
 
 class Manager:
   """The simple plugin system - this is documented in the docs directory."""
-  
+
   def __init__(self,baseDir = ''):
     # Basic configuratrion variables...
     self.baseDir = baseDir
     self.pluginDir = 'plugins'
     self.configDir = self.baseDir+'config/'
     self.loadingInvFrameRate = 1.0/20.0
-    
+
     # The plugin database - dictionary of modules...
     self.plugin = dict()
-    
-    
-    # Create the instance database - a list in creation order of (obj,name) where name can be None for nameless objects, plus a dictionary to get at the objects by name...
+
+
+    # Create the instance database - a list in creation order of (obj,name)
+    # where name can be None for nameless objects, plus a dictionary to get at the objects by name...
     self.objList = []
     self.named = dict()
 
@@ -47,17 +48,24 @@ class Manager:
 
     # For pandaStep...
     self.lastTime = 0.0
-  
+
   def transition(self,config):
-    """Transitions from the current configuration to a new configuration, makes a point to keep letting Panda draw whilst it is doing so, so any special loading screen plugin can do its stuff. Maintains some variables in this class so such a plugin can also display a loading bar."""
-    
-    # Step 1 - call stop on all current objects- do this immediatly as we can't have some running whilst others are not...
+    """Transitions from the current configuration to a new configuration,
+       makes a point to keep letting Panda draw whilst it is doing so, so any
+       special loading screen plugin can do its stuff.
+
+       Maintains some variables in this class so such a plugin can also display a loading bar."""
+
+    # Step 1 - call stop on all current objects- do this immediatly
+    # as we can't have some running whilst others are not...
     for obj in self.objList:
       stop = getattr(obj[0],'stop',None)
       if isinstance(stop,types.MethodType):
         stop()
 
-    # Declare the task that is going to make the transition - done this way to keep rendering whilst we make the transition, for a loading screen etc. This is a generator for conveniance...
+    # Declare the task that is going to make the transition - done this way to
+    # keep rendering whilst we make the transition, for a loading screen etc.
+    # This is a generator for conveniance...
     def transTask(task):
       # Step 2 - move the database to 'old', make a new one...
       self.oldObjList = self.objList
@@ -78,7 +86,9 @@ class Manager:
         inst = obj[0]
         name = obj[1]
         if (not self.oldNamed.has_key(name)) or self.oldNamed[name]!=True:
-          # It needs to die - we let the reference count being zeroed do the actual deletion but it might have a slow death, so we use the destroy method/generator to make it happen during the progress bar ratehr than blocking the gc at some random point...
+          # It needs to die - we let the reference count being zeroed do the actual
+          # deletion but it might have a slow death, so we use the destroy method/generator
+          # to make it happen during the progress bar ratehr than blocking the gc at some random point...
           destroy = getattr(inst,'destroy',None)
           if isinstance(destroy,types.MethodType):
             ret = destroy()
@@ -110,7 +120,10 @@ class Manager:
 
 
   def end(self):
-    """Ends the program neatly - closes down all the plugins before calling sys.exit(). Effectivly a partial transition, though without the framerate maintenance."""
+    """Ends the program neatly - closes down
+       all the plugins before calling sys.exit().
+       Effectivly a partial transition,
+       though without the framerate maintenance."""
 
     # Stop all the plugins...
     for obj in self.objList:
@@ -134,8 +147,12 @@ class Manager:
 
 
   def addObj(self,element):
-    """Given a xml.etree Element of type obj this does the necesary - can only be called during a transition, exposed like this for the Include class. Note that it is a generator."""
-    
+    """Given a xml.etree Element of type obj this does
+       the necesary - can only be called during a transition,
+       exposed like this for the Include class.
+
+       Note that it is a generator."""
+
     # Step 1 - get the details of the plugin we will be making...
     plugin = element.get('type')
     name = element.get('name')
@@ -182,12 +199,17 @@ class Manager:
     yield None
 
   def get(self,name):
-    """Returns the plugin instance associated with the given name, or None if it doesn't exist."""
+    """Returns the plugin instance associated with the given name,
+       or None if it doesn't exist."""
     if self.named.has_key(name):
       return self.named[name]
     else:
       return None
 
   def getPercentage(self):
-    """During a transition this will return [0,1] indicating percentage done - for a loading plugin to use. Calling at other times will return 1.0 This is not yet implimented, as it needs to get very clever to compensate for variable loading times and includes."""
+    """During a transition this will return [0,1] indicating
+       percentage done - for a loading plugin to use.
+       Calling at other times will return 1.0 This is not yet implimented,
+       as it needs to get very clever to compensate for
+       variable loading times and includes."""
     return 1.0

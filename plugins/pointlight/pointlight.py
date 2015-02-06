@@ -28,11 +28,13 @@ class PointLight:
   def reload(self,manager,xml):
     color = xml.find('color')
     if color!=None:
-      self.light.setColor(VBase4(float(color.get('r')), float(color.get('g')), float(color.get('b')), 1.0))
+      self.light.setColor(VBase4(float(color.get('r')), float(color.get('g')),
+                                                        float(color.get('b')), 1.0))
 
     pos = xml.find('pos')
     if pos!=None:
-      self.lightNode.setPos(render, float(pos.get('x')), float(pos.get('y')), float(pos.get('z')))
+      self.lightNode.setPos(render, float(pos.get('x')), float(pos.get('y')),
+                                                         float(pos.get('z')))
 
 
   def start(self):

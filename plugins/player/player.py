@@ -24,7 +24,10 @@ from bin.shared import ray_cast
 
 
 class Player:
-  """A Player class - doesn't actually do that much, just arranges collision detection and provides a camera mount point, plus an interface for the controls to work with. All configured of course."""
+  """A Player class - doesn't actually do that much, just arranges collision
+     detection and provides a camera mount point, plus an interface for the
+     controls to work with. All configured of course."""
+
   def __init__(self,manager,xml):
     # Create the nodes...
     self.stomach = render.attachNewNode('player-stomach')
@@ -47,7 +50,7 @@ class Player:
     self.feet.removeNode()
     self.neck.removeNode()
     self.view.removeNode()
-    
+
     if self.body!=None:
       self.body.destroy()
     if self.colStanding!=None:
@@ -89,7 +92,9 @@ class Player:
       self.playerImpulse = 75000.0 # Only when on ground
       self.crouchSpeed = 4.0
       self.jumpForce = 16000.0
-      self.jumpThreshold = 0.1 # How long ago the player must of touched the floor for them to be allowed to jump - gives them a bit of lee way an copes with physics system jitter.
+      self.jumpThreshold = 0.1 # How long ago the player must of touched the floor
+                               # for them to be allowed to jump - gives them a
+                               # bit of lee way an copes with physics system jitter.
 
     # Get the players mass and terminal velocity...
     body = xml.find('body')
@@ -150,12 +155,14 @@ class Player:
     self.standCheck = OdeSphereGeom(self.radius)
     self.standCheck.setCategoryBits(BitMask32(0xFFFFFFFE))
     self.standCheck.setCollideBits(BitMask32(0xFFFFFFFE))
-    
+
     # We also need to store when a jump has been requested...
     self.doJump = False
     self.midJump = False
     self.surNormal = None # Surface normal the player is standing on.
-    self.lastOnFloor = 0.0 # How long ago since the player was on the floor - we give a threshold before we stop allowing jumping. Needed as ODE tends to make you alternate between touching/not touching.
+    self.lastOnFloor = 0.0 # How long ago since the player was on the floor - we give a
+                           # threshold before we stop allowing jumping.
+                           # Needed as ODE tends to make you alternate between touching/not touching.
 
     # Need to know if we are crouching or not...
     self.crouching = False
@@ -168,7 +175,7 @@ class Player:
   # Player task - basically handles crouching as everything else is too physics engine dependent to be per frame...
   def playerTask(self,task):
     dt = globalClock.getDt()
-    
+
     # Crouching - this switches between the two cylinders immediatly on a mode change...
     if self.crouching!=self.crouchingTarget:
       if self.crouchingTarget:
@@ -213,7 +220,8 @@ class Player:
           self.stomach.setPos(self.stomach,offset)
           self.view.setPos(self.view,-offset)
 
-    # Crouching - this makes the height head towards the correct height, to give the perception that crouching takes time...
+    # Crouching - this makes the height head towards the correct height,
+    #             to give the perception that crouching takes time...
     currentHeight = self.view.getZ() - self.neck.getZ()
     if self.crouching:
       targetHeight = self.crouchHeadHeight - 0.5*self.crouchHeight
@@ -232,7 +240,9 @@ class Player:
     targVel = self.feet.getPos()
     dt = self.ode.getDt()
 
-    # Check if the player is standing still or moving - if moving try and obtain the players target velocity, otherwsie try to stand still, incase the player is on a slope and otherwise liable to slide (Theres a threshold to keep behaviour nice - slope too steep and you will slide.)...
+    # Check if the player is standing still or moving - if moving try and obtain the players target velocity,
+    #otherwsie try to stand still, incase the player is on a slope and otherwise liable to slide
+    # (Theres a threshold to keep behaviour nice - slope too steep and you will slide.)...
     if targVel.lengthSquared()<1e-2 and vel.lengthSquared()<1e-1:
       # Player standing still - head for last standing position...
       targVel = self.targPos - self.stomach.getPos()
@@ -248,7 +258,8 @@ class Player:
       targVel = rot.xformVecGeneral(targVel)
 
 
-    # Find out if the player is touching the floor or not - we check if the bottom hemisphere has touched anything - this uses the lowest collision point from the last physics step...
+    # Find out if the player is touching the floor or not - we check if the bottom hemisphere
+    # has touched anything - this uses the lowest collision point from the last physics step...
     if (self.surNormal!=None) and (self.surNormal[2]>0.0):
       self.lastOnFloor = 0.0
     else:
@@ -258,7 +269,7 @@ class Player:
     # Calculate the total force we would *like* to apply...
     force = targVel - vel
     force *= self.mass/dt
-    
+
     # Cap the liked force by how strong the player actually is and fix the player to apply force in the direction of the floor...
     forceCap = self.playerBaseImpulse
     if onFloor: forceCap += self.playerImpulse
@@ -306,12 +317,14 @@ class Player:
     # Apply the force...
     self.body.addForce(force)
 
-    # Simple hack to limit how much air the player gets off the top of ramps - need a better solution. It still allows for some air, but other solutions involve the player punching through ramps...
+    # Simple hack to limit how much air the player gets off the top of ramps - need a better solution.
+    # It still allows for some air, but other solutions involve the player punching through ramps...
     if (not onFloor) and (not self.midJump) and (vel[2]>0.0):
       vel[2] = 0.0
       self.body.setLinearVel(vel)
-    
-    # We have to reset the record of the lowest point the player is standing on ready for the collision callbacks to recalculate it ready for the next run of this handler...
+
+    # We have to reset the record of the lowest point the player is standing on ready for
+    # the collision callbacks to recalculate it ready for the next run of this handler...
     self.surNormal = None
 
 
@@ -319,14 +332,15 @@ class Player:
     # Zero out all rotation...
     self.body.setQuaternion(Quat())
     self.body.setAngularVel(Vec3(0.0,0.0,0.0))
-    
+
     # Update the panda node position to match the ode body position...
     pp = self.body.getPosition() + self.body.getLinearVel()*self.ode.getRemTime() # Interpolation from physics step for smoother movement - due to physics being on a constant frame rate.
     self.stomach.setPos(render,pp)
 
 
   def onPlayerCollide(self,entry,which):
-    # Handles the players collisions - used to work out the orientation of the surface the player is standing on...
+    # Handles the players collisions - used to work out the
+    # orientation of the surface the player is standing on...
     for i in xrange(entry.getNumContacts()):
       n = entry.getContactGeom(i).getNormal()
       if which:
@@ -338,13 +352,14 @@ class Player:
 
   def start(self):
     self.reset()
-    
+
     # Arrange all the tasks/callbacks required...
     self.task = taskMgr.add(self.playerTask, 'PlayerTask')
     self.ode.regPreFunc('playerPrePhysics', self.playerPrePhysics)
     self.ode.regPostFunc('playerPostPhysics', self.playerPostPhysics)
 
-    # To know if the player is on the floor or airborne we have to intecept collisions between the players capsules and everything else...
+    # To know if the player is on the floor or airborne we have to
+    # intecept collisions between the players capsules and everything else...
     self.ode.regCollisionCB(self.colStanding, self.onPlayerCollide)
     self.ode.regCollisionCB(self.colCrouching, self.onPlayerCollide)
 
@@ -359,7 +374,8 @@ class Player:
 
 
   def reset(self):
-    """Resets the player back to their starting position. (Leaves rotation alone - this is for debuging falling out the level kinda stuff.)"""
+    """Resets the player back to their starting position.
+      (Leaves rotation alone - this is for debuging falling out the level kinda stuff.)"""
     start = self.manager.get('level').getByIsA('PlayerStart')
     if len(start)>0:
       start = random.choice(start) # If there are multiple player starts choose one at random!
@@ -395,7 +411,8 @@ class Player:
 
 
   def getNode(self,name):
-    """Standard interface for exposing a node path to other plugins - this exposes 'view' as the players head position, and 'feet' as the players foot position."""
+    """Standard interface for exposing a node path to other plugins - this exposes
+       'view' as the players head position, and 'feet' as the players foot position."""
     if name=='view':
       return self.view
     elif name=='feet':

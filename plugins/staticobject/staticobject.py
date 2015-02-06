@@ -19,7 +19,9 @@ from pandac.PandaModules import *
 
 
 class StaticObject:
-  """Replaces all of a specific IsA in a scene with a specific mesh, including collision detection. It can also contain a bunch of <instance> tags, that way you can specify positions yourself instead of doing it in the world model."""
+  """Replaces all of a specific IsA in a scene with a specific mesh,
+     including collision detection. It can also contain a bunch of <instance> tags,
+     that way you can specify positions yourself instead of doing it in the world model."""
   def __init__(self,manager,xml):
     self.reload(manager,xml)
     self.node = render.attachNewNode('StaticObjects')
@@ -55,10 +57,10 @@ class StaticObject:
       yield
     self.things = []
     yield
-    
+
     # Mesh path, physics plugin and physics type...
     basePath = self.manager.get('paths').getConfig().find('objects').get('path')
-    
+
     phys = self.xml.find('physics')
     if phys!=None:
       odeName = phys.get('plugin','ode')
@@ -105,11 +107,15 @@ class StaticObject:
       if pType=='sphere':
         col = OdeSphereGeom(self.ode.getSpace(), float(phys.get('radius')))
       elif pType=='box':
-        col = OdeBoxGeom(self.ode.getSpace(), float(phys.get('lx')), float(phys.get('ly')), float(phys.get('lz')))
+        col = OdeBoxGeom(self.ode.getSpace(), float(phys.get('lx')),
+                                              float(phys.get('ly')),
+                                              float(phys.get('lz')))
       elif pType=='cylinder':
-        col = OdeCylinderGeom(self.ode.getSpace(), float(phys.get('radius')), float(phys.get('height')))
+        col = OdeCylinderGeom(self.ode.getSpace(), float(phys.get('radius')),
+                                                   float(phys.get('height')))
       elif pType=='capsule':
-        col = OdeCappedCylinderGeom(self.ode.getSpace(), float(phys.get('radius')), float(phys.get('height')))
+        col = OdeCappedCylinderGeom(self.ode.getSpace(), float(phys.get('radius')),
+                                                         float(phys.get('height')))
       elif pType=='mesh':
         colMesh = loader.loadModel(posixpath.join(basePath,phys.get('filename')))
         colTri = OdeTriMeshData(colMesh,True)

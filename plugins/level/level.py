@@ -25,13 +25,17 @@ from bin.shared import odeSpaceHier
 
 
 class Level:
-  """This loads a level - that is it loads a collection fo egg files and sticks them at the origin. These files will typically be very large. 4 files, all optional, are typically given - the rendered file, the collision file, the detail file (Visible instances of high res geometry.) and the entity file. (Lots of empties used by the programmer.)"""
+  """This loads a level - that is it loads a collection fo egg files and sticks
+     them at the origin. These files will typically be very large. 4 files,
+     all optional, are typically given - the rendered file, the collision file,
+     the detail file (Visible instances of high res geometry.) and the entity file.
+     (Lots of empties used by the programmer.)"""
   def __init__(self,manager,xml):
     self.reload(manager,xml)
 
   def reload(self,manager,xml):
     # Load from the xml the details needed to do the actual loading...
-    
+
     # Get the path to load levels from...
     basePath = manager.get('paths').getConfig().find('levels').get('path')
 
@@ -81,7 +85,7 @@ class Level:
       while self.rend==None:
         time.sleep(0.05)
         yield
-      
+
       # Let's hide it from the shadowcam for now.
       self.rend.hide(BitMask32.bit(3))
       if self.rendAmb:
@@ -134,7 +138,9 @@ class Level:
     return self.things
 
   def getByIsA(self,name):
-    """Given a name this returns a list of all objects in the things structure that have the tag IsA with the given name as the data. Will return an empty list if none available."""
+    """Given a name this returns a list of all objects in the things structure
+       that have the tag IsA with the given name as the data. Will return an
+       empty list if none available."""
     if self.things == None: return []
     col = self.things.findAllMatches('**/=IsA='+name)
     ret = []
@@ -147,4 +153,3 @@ class Level:
       self.rend.show()
     else:
       self.rend.hide()
-

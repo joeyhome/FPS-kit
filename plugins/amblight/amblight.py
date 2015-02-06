@@ -28,7 +28,8 @@ class AmbLight:
   def reload(self,manager,xml):
     color = xml.find('color')
     if color!=None:
-      self.light.setColor(VBase4(float(color.get('r')), float(color.get('g')), float(color.get('b')), 1.0))
+      self.light.setColor(VBase4(float(color.get('r')), float(color.get('g')),
+                                                float(color.get('b')), 1.0))
 
 
   def start(self):

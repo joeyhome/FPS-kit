@@ -18,7 +18,10 @@ from direct.showbase import DirectObject
 
 
 class EscExit(DirectObject.DirectObject):
-  """This arranges it so that the escape key causes the program to instantly exit. Note that it disables this feature during a transition - this is required otherwise this object could never be deleted."""
+  """This arranges it so that the escape key causes the program to instantly exit.
+     Note that it disables this feature during a transition - this is required
+     otherwise this object could never be deleted."""
+     
   def __init__(self,manager,xml):
     self.end = manager.end;
 

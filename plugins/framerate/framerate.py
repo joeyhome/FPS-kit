@@ -19,6 +19,7 @@ from direct.showbase import DirectObject
 
 
 class FrameRate(DirectObject.DirectObject):
+    
   """Toggles displaying the framerate with F12."""
   def __init__(self,manager,xml):
     self.state = False

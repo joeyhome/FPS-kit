@@ -17,6 +17,7 @@ from pandac.PandaModules import LightRampAttrib
 from direct.filter.CommonFilters import CommonFilters
 
 class Filters:
+    
   """Class handles postprocessing filters and effects"""
   def __init__(self,manager,xml):
     self.cf = CommonFilters(base.win,base.cam)
@@ -62,9 +63,9 @@ class Filters:
 
     if self.perpixel:
       render.setShaderOff()
-    
+
     if self.bloomSize!=None:
       self.cf.delBloom()
-    
+
     if self.showbuffers:
       base.bufferViewer.toggleEnable()

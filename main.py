@@ -16,7 +16,8 @@
 
 
 
-# Entry point - sets up the plugin system by giving it the config file to load and then releases panda to do its thing...
+# Entry point - sets up the plugin system by giving it the config file to load
+# and then releases panda to do its thing...
 
 # Important: this must be first
 from pandac.PandaModules import loadPrcFile, loadPrcFileData
@@ -48,7 +49,7 @@ def firstLight(task):
     cn = sys.argv[1]
   else:
     cn = 'menu'
-  
+
   print 'Starting configuration ' + cn
   plugin.transition(cn)
   return Task.done

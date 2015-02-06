@@ -19,7 +19,8 @@ from direct.showbase import DirectObject
 
 
 class KeysFPS(DirectObject.DirectObject):
-  """This intercepts the FPS typical keys, and sends the offsets to a configured NodePath."""
+  """This intercepts the FPS typical keys,
+     and sends the offsets to a configured NodePath."""
   def __init__(self,manager,xml):
     # Setup state variables...
     self.forward = 0
@@ -64,12 +65,12 @@ class KeysFPS(DirectObject.DirectObject):
   def keysTask(self,task):
     if self.slow or self.isCrouched(): speed = self.slowSpeed
     else: speed = self.speed
-    
+
     walk = float(self.forward-self.backward) * speed
     strafe = float(self.right-self.left) * speed
-    
+
     self.node.setPos(strafe,walk,0.0)
-    
+
     return task.cont
 
 
@@ -150,7 +151,7 @@ class KeysFPS(DirectObject.DirectObject):
   def stop(self):
     taskMgr.remove(self.task)
     self.task = None
-    
+
     self.ignoreAll()
 
     self.forward = 0

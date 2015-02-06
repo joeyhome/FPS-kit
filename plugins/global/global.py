@@ -18,7 +18,8 @@ import posixpath
 
 
 class Global:
-  """This provides global access to lumps of configuration xml - allows other plugin objects to get at the xml it is given."""
+  """This provides global access to lumps of configuration xml - allows other
+     plugin objects to get at the xml it is given."""
   def __init__(self,manager,xml):
     self.reload(manager,xml)
 

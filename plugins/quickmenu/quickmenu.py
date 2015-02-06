@@ -17,7 +17,8 @@ from direct.gui.DirectGui import *
 
 
 class QuickMenu:
-  """This creates a menu - nothing fancy - just a list of buttons, each of which invokes a transition to another config file."""
+  """This creates a menu - nothing fancy - just a list of buttons,
+     each of which invokes a transition to another config file."""
   def __init__(self,manager,xml):
     self.buttons = []
 

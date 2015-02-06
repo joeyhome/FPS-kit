@@ -12,7 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pandac.PandaModules import CardMaker, Texture, ModelRoot, ColorBlendAttrib, TransparencyAttrib, DecalEffect, NodePath, Point2, Point3, BitMask32
+from pandac.PandaModules import CardMaker
+from pandac.PandaModules import Texture
+from pandac.PandaModules import ModelRoot
+from pandac.PandaModules import ColorBlendAttrib
+from pandac.PandaModules import TransparencyAttrib
+from pandac.PandaModules import DecalEffect
+from pandac.PandaModules import NodePath
+from pandac.PandaModules import Point2, Point3
+from pandac.PandaModules import BitMask32
+
 from random import random
 
 BULLETHOLE_SIZE = 0.05
@@ -62,4 +71,3 @@ class BulletHoles:
 
   def destroy(self):
     self.container.removeNode()
-

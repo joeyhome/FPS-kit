@@ -19,7 +19,8 @@ from direct.showbase import DirectObject
 
 
 class MethodOnKey(DirectObject.DirectObject):
-  """This intercepts a single key press, calling a named method of a named plugin when intercepted."""
+  """This intercepts a single key press, calling a named method
+      of a named plugin when intercepted."""
   def __init__(self,manager,xml):
     self.reload(manager,xml)
 

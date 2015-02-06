@@ -18,6 +18,7 @@ from direct.actor import Actor
 
 
 class Loading:
+    
   """Does a loading screen - renders some stuff whilst a transition is happenning."""
   def __init__(self,manager,xml):
     self.node = Actor.Actor('data/misc/loading')

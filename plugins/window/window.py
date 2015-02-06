@@ -44,7 +44,7 @@ class Window:
   def toggleFullscreen(self):
     prop = base.win.getProperties()
     newProp = WindowProperties()
-    
+
     if not prop.getFullscreen():
       newProp.setFullscreen(True)
       # Quick hack to get it to select a suitable display mode.
@@ -58,11 +58,11 @@ class Window:
         newProp.setSize(800,600)
     else:
       newProp.setFullscreen(False)
-    
+
     base.win.requestProperties(newProp)
-  
+
   def record(self,task):
-    base.screenshot(defaultFilename=False,namePrefix=('video|%s|%04i.jpg'%(self.video,self.frameNum)))
+    base.screenshot(defaultFilename=False, namePrefix=('video|%s|%04i.jpg'%(self.video,self.frameNum)))
     self.frameNum += 1
     return task.cont
 

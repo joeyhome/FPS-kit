@@ -22,7 +22,10 @@ from pandac.PandaModules import *
 
 
 def nearestHit(space,ray):
-  """Collides the given ray with the space provided by the ode module - returns (None,None,None) if it fails to hit anything or a tuple of (geom,position,normal) of the closest point that it does hit."""
+  """Collides the given ray with the space provided by
+     the ode module - returns (None,None,None) if it fails to hit
+     anything or a tuple of (geom,position,normal) of
+     the closest point that it does hit."""
   bestPos = None
   bestNorm = None
   bestGeom = None
@@ -41,10 +44,12 @@ def nearestHit(space,ray):
       bestDepth = depth
 
   return (bestGeom,bestPos,bestNorm)
-  
-  
+
+
 def collides(space,obj):
-  """Not really ray related, but similar to above. Tests if the given obj collides with anything in the given space - returns True if it does, False if it does not."""
+  """Not really ray related, but similar to above.
+     Tests if the given obj collides with anything in the given
+     space - returns True if it does, False if it does not."""
   for i in xrange(space.getNumGeoms()):
     geom = space.getGeom(i)
 

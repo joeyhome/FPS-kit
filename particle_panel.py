@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
-# Particle panel - copied from Panda examples and then editted for extra functionality - original authors Shao Zhang, Phil Saltzman.
+# Particle panel - copied from Panda examples and then editted for extra
+#        functionality - original authors Shao Zhang, Phil Saltzman.
 # Useful for editting the various particles contained within this directory.
 
 import sys
@@ -30,7 +31,7 @@ class MouseRot(DirectObject.DirectObject):
     self.prevX = 0.0
     self.prevY = 0.0
     self.mouseDown = False
-    
+
     taskMgr.add(self.mouseTask,'Mouse')
 
     self.accept('mouse1',self.down)
@@ -54,7 +55,7 @@ class MouseRot(DirectObject.DirectObject):
       dY = md.getY() - self.prevY
 
       self.centre.setHpr(self.centre,dX,dY,0.0)
-      
+
       self.prevX = md.getX()
       self.prevY = md.getY()
 
@@ -65,4 +66,4 @@ mr = MouseRot()
 
 
 # Set panda going...
-run()  
+run()

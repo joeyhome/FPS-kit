@@ -20,7 +20,8 @@ from pandac.PandaModules import *
 
 
 def getPos(s):
-  """Given a string in a form "5,4,3" returns a Vec3 for that vector."""
+  """Given a string in a form "5,4,3"
+     returns a Vec3 for that vector."""
   n = map(lambda x:float(x),s.split(','))
   if len(n)!=3:
     raise Exception('Bad vector string')

@@ -29,7 +29,8 @@ from pandac.PandaModules import *
 
 
 class SimpleWeapon:
-  """Provides a simple weapon system - not very sophisticaed, but good enough to test shooting things."""
+  """Provides a simple weapon system - not very sophisticaed,
+     but good enough to test shooting things."""
   def __init__(self,manager,xml):
     self.gunView = render.attachNewNode('gun-view')
     self.ray = None
@@ -94,11 +95,11 @@ class SimpleWeapon:
     # Create a quaternion that rotates +ve z to +ve y - used to point it in the weapon direction rather than up...
     self.zToY = Quat()
     self.zToY.setFromAxisAngle(-90.0,Vec3(1.0,0.0,0.0))
-    
+
     # State for the animation...
     self.state = False # False==casual, True==aim.
     self.nextState = False
-    
+
     # Firing state...
     self.firing = False # True if the trigger is being held.
     self.triggerTime = 0.0 # How long the trigger has been held for, so we know when to eject ammo.
@@ -200,7 +201,7 @@ class SimpleWeapon:
   def start(self):
     # Make the gun visible...
     self.mesh.show()
-    
+
     # Set the gun animation going...
     self.interval.finish()
 
@@ -230,10 +231,10 @@ class SimpleWeapon:
       self.interval.pause()
       self.nextState = s
       self.camera.setZoomed(s)
-      
+
       def wib():
         self.interval.finish()
-      
+
       if s: ani = 'casual_aim'
       else: ani = 'aim_casual'
       transition = Sequence(self.mesh.actorInterval(ani),Func(wib))

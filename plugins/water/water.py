@@ -53,7 +53,7 @@ def getWaterSurface(manager, polycount = 50000, size = (512,512)):
   node.setPos(-0.5 * size[0], 0.5 * size[1], 0)
   node.flattenLight()
   node.writeBamFile(cachedWaterSurface)
-  
+
   return node
 
 
@@ -121,11 +121,10 @@ class Water:
     #self.fog.setColor(0.0,0.3,0.5)
     self.fogEnabled = False
 
-
   def start(self):
     self.updateTask = taskMgr.add(self.update, 'water-update')
     self.surface.show()
-    
+
   def stop(self):
     self.surface.hide()
     taskMgr.remove(self.updateTask)

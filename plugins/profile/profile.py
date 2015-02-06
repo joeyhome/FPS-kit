@@ -20,7 +20,8 @@ from direct.showbase import DirectObject
 from pandac.PandaModules import *
 
 class Profile(DirectObject.DirectObject):
-  """Connects to pstats, if pstats is not running on the local computer it will set a copy running regardless."""
+  """Connects to pstats, if pstats is not running on the local
+     computer it will set a copy running regardless."""
   def __init__(self,manager,xml):
     self.pstats = None
 

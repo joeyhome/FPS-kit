@@ -24,7 +24,8 @@ from direct.interval.FunctionInterval import *
 
 
 class ParticleManager:
-  """Simple particle system wrapper - put here in the hope that latter on a better way of doing things will exist and this will make the swap out easy."""
+  """Simple particle system wrapper - put here in the hope that latter on a
+     better way of doing things will exist and this will make the swap out easy."""
   def __init__(self,manager,xml):
     # Get the particle system path...
     self.basePath = manager.get('paths').getConfig().find('particles').get('path')
@@ -36,7 +37,9 @@ class ParticleManager:
 
 
   def reload(self,manager,xml):
-    # Generate a database of particle effects from the xml - this consists of a name to request the effect by, a configuration file to load and how long to let it live before destroying it. (If omited it will live until a stop.)
+    # Generate a database of particle effects from the xml - this consists of a
+    # name to request the effect by, a configuration file to load and how long
+    # to let it live before destroying it. (If omited it will live until a stop.)
     self.pdb = dict()
     for effect in xml.findall('effect'):
       new = dict()
@@ -59,7 +62,10 @@ class ParticleManager:
 
 
   def doEffect(self,name,source,track = False,pos = None,quat = None):
-    """Creates the particle effect with the given name. source is the node to appear at - if track is false its initialised here and then remains fixed in world space, otherwise it moves with the source node. pos and quat are offset's in source's local coordinate sytem for the origin."""
+    """Creates the particle effect with the given name. source is the node to
+       appear at - if track is false its initialised here and then remains fixed
+       in world space, otherwise it moves with the source node. pos and quat are
+       offset's in source's local coordinate sytem for the origin."""
 
     # Create node to store the particle effect in...
     if track:
@@ -100,7 +106,8 @@ class ParticleManager:
 
 
   def prepNode(self,node):
-    """Internal use only really - given a node this prepares it to be the parent of a paricle system."""
+    """Internal use only really - given a node this prepares it to
+       be the parent of a paricle system."""
     node.setBin('fixed',0)
     node.setDepthWrite(False)
     node.setLightOff()

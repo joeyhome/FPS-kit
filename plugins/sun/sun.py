@@ -13,7 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pandac.PandaModules import Point2, Vec3, Vec4, NodePath, CardMaker, Shader, ColorBlendAttrib, Texture, BitMask32, TransparencyAttrib, OmniBoundingVolume
+from pandac.PandaModules import Point2
+from pandac.PandaModules import Vec3
+from pandac.PandaModules import Vec4
+from pandac.PandaModules import NodePath
+from pandac.PandaModules import CardMaker
+from pandac.PandaModules import Shader
+from pandac.PandaModules import ColorBlendAttrib
+from pandac.PandaModules import Texture
+from pandac.PandaModules import BitMask32
+from pandac.PandaModules import TransparencyAttrib
+from pandac.PandaModules import OmniBoundingVolume
 import posixpath
 
 class Sun:
@@ -45,7 +55,7 @@ class Sun:
         orig = Vec3(level.getByIsA(isa.get('name'))[0].getPos(render))
       orig.normalize()
       self.sun.setPos(orig)
-    
+
     godrays = xml.find('godrays')
     if godrays != None:
       self.vlbuffer = base.win.makeTextureBuffer('volumetric-lighting', base.win.getXSize()/2, base.win.getYSize()/2)
@@ -67,13 +77,18 @@ class Sun:
       card = CardMaker('VolumetricLightingCard')
       card.setFrameFullscreenQuad()
       self.finalQuad = render2d.attachNewNode(card.generate())
-      self.finalQuad.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd, ColorBlendAttrib.OIncomingColor, ColorBlendAttrib.OFbufferColor))
+      self.finalQuad.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd,
+                                                     ColorBlendAttrib.OIncomingColor,
+                                                     ColorBlendAttrib.OFbufferColor))
+
       self.finalQuad.setShader(Shader.load(posixpath.join(manager.get('paths').getConfig().find('shaders').get('path'), 'filter-vlight.cg')))
       self.finalQuad.setShaderInput('src', self.vltexture)
       self.finalQuad.setShaderInput('vlparams', 32, 0.9/32.0, 0.97, 0.5) # Note - first 32 is now hardcoded into shader for cards that don't support variable sized loops.
       self.finalQuad.setShaderInput('casterpos', 0.5, 0.5, 0, 0)
       # Last parameter to vlcolor is the exposure
-      vlcolor = Vec4(float(godrays.get('r', '1')), float(godrays.get('g', '1')), float(godrays.get('b', '1')), 0.04)
+      vlcolor = Vec4(float(godrays.get('r', '1')), float(godrays.get('g', '1')),
+                                                   float(godrays.get('b', '1')), 0.04)
+                                                   
       self.finalQuad.setShaderInput('vlcolor', vlcolor)
     else:
       self.finalQuad = None
@@ -81,7 +96,7 @@ class Sun:
   def start(self):
     if self.finalQuad!=None:
       self.updateTask = taskMgr.add(self.update, 'sky-update')
-    
+
   def stop(self):
     if self.updateTask!=None:
       taskMgr.remove(self.updateTask)
@@ -91,4 +106,3 @@ class Sun:
     base.camLens.project(self.sun.getPos(base.cam), casterpos)
     self.finalQuad.setShaderInput('casterpos', Vec4(casterpos.getX() * 0.5 + 0.5, (casterpos.getY() * 0.5 + 0.5), 0, 0))
     return task.cont
-

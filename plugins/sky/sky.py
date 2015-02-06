@@ -14,7 +14,10 @@
 # limitations under the License.
 
 import posixpath
-from pandac.PandaModules import Vec3, Vec4, BitMask32, TransparencyAttrib
+from pandac.PandaModules import Vec3
+from pandac.PandaModules import Vec4
+from pandac.PandaModules import BitMask32
+from pandac.PandaModules import TransparencyAttrib
 
 class Sky:
   """This loads a skydome/box/whatever the user specified."""
@@ -22,13 +25,14 @@ class Sky:
     # Set the background color first
     background = xml.find("background")
     if background != None:
-      self.bgColour = Vec4(float(background.get('r')), float(background.get('g')), float(background.get('b')), 1)
+      self.bgColour = Vec4(float(background.get('r')), float(background.get('g')),
+                                                       float(background.get('b')), 1)
     else:
       self.bgColour = None
 
     # Get the path to load skies from...
     basePath = manager.get('paths').getConfig().find('skies').get('path')
-    
+
     self.model = None
     skydome = xml.find('skydome')
     if skydome != None:

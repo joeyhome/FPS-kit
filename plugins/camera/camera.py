@@ -27,28 +27,32 @@ class Camera:
 
 
   def reload(self,manager,xml):
-    # Get the cameras initial position from the configuration file - only matters if the camera isn't about to be made a child of a node to be controlled elsewhere...
+    # Get the cameras initial position from the configuration file - only matters
+    # if the camera isn't about to be made a child of a node to be controlled elsewhere...
     pos = xml.find('pos')
     if pos!=None:
       self.pos = (float(pos.get('x')),float(pos.get('y')),float(pos.get('z')))
     else:
       self.pos = None
 
-    # Get the cameras initial looking at position - just like position this is pointless if the camera will be tracking a node...
+    # Get the cameras initial looking at position - just like position this is
+    # pointless if the camera will be tracking a node...
     lookAt = xml.find('lookAt')
     if lookAt!=None:
       self.lookAt = (float(lookAt.get('x')),float(lookAt.get('y')),float(lookAt.get('z')))
     else:
       self.lookAt = None
 
-    # Sets a parent node for the camera - the camera will then move and rotate how this node modes and rotates...
+    # Sets a parent node for the camera - the camera will then move and rotate
+    # how this node modes and rotates...
     track = xml.find('track')
     if track!=None:
       self.track = manager.get(track.get('plugin')).getNode(track.get('node'))
     else:
       self.track = None
 
-    # Get the zooming parameters, used to set how the normal field of view and the field of view used when the player looks down the weapon...
+    # Get the zooming parameters, used to set how the normal field of view and
+    # the field of view used when the player looks down the weapon...
     fov = xml.find('fov')
     self.zoomed = False
     if fov!=None:
@@ -77,8 +81,9 @@ class Camera:
       base.camera.reparentTo(self.track)
       base.camera.setPos(0.0,0.0,0.0)
       base.camera.lookAt(0.0,1.0,0.0)
-    
-    # Create a task that tweaks the cameras fov to do the zooming in requiured when the player looks down a gun...
+
+    # Create a task that tweaks the cameras fov to do the zooming in
+    # requiured when the player looks down a gun...
     def trackZoom(task):
       fov = base.camLens.getFov()[0]
       if self.zoomed:

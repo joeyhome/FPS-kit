@@ -1,0 +1,8 @@
+<config>
+  <obj type="Include" config="cove"/>
+
+  <obj type="Sun" name="sun">
+    <isa source="level" name="Sun"/>
+    <godrays r="1.0" g="0.8" b="0.25"/>
+  </obj>
+</config>

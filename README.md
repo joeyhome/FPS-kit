@@ -1,5 +1,11 @@
 # FPS-kit
 
+This is a demonstration fps using the Panda 3D game engine. The ultimate goal is to create a FPS kit - a framework for people intending to make fps-s (Or other genres - the system is very flexible.).
+
+In its current state a playable environment exists, with all the key components of a fps, except for enemies. (You can still shoot cans of spam however!) Key things it demonstrates are how to handle levels in a game, use of a plugin architecture and a few examples of fx. Polish is lacking however, and most of the artwork is of the programmer variety.
+
+This is for of "Naith" project. See old_licence.
+
 TODO:
 ____
 - [ ] GUI Example (Main Menu, Ammo Count, Weapon List and alot more)
